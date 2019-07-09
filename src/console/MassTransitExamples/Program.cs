@@ -7,7 +7,7 @@ namespace MassTransitExamples
     {
         static void Main(string[] args)
         {
-            Example2();
+            Example3();
         }
 
         public static void BasicExample()
@@ -53,6 +53,34 @@ namespace MassTransitExamples
                 sbc.ReceiveEndpoint(host, "test_queue", ep =>
                 {
                     ep.Consumer<YourMessageConsumer>();
+                });
+            });
+
+            bus.Start();
+
+            bus.Publish(new YourMessage { Text = "Hi" });
+
+            Console.WriteLine("Press any key to exit");
+            Console.ReadKey();
+
+            bus.Stop();
+
+        }
+
+        public static void Example3()
+        {
+            var bus = Bus.Factory.CreateUsingRabbitMq(sbc =>
+            {
+                var host = sbc.Host(new Uri("rabbitmq://localhost"), h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+
+                sbc.ReceiveEndpoint(host, "test_queue", ep =>
+                {
+                    ep.Consumer<YourMessageConsumer>();
+                    ep.Consumer<SecondMessageConsumer>();
                 });
             });
 

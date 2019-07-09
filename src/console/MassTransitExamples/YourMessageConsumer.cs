@@ -11,7 +11,7 @@ namespace MassTransitExamples
     {
         public async Task Consume(ConsumeContext<YourMessage> context)
         {
-            await Console.Out.WriteLineAsync($"MessageConsumer: {context.Message.Text}");
+            await Console.Out.WriteLineAsync($"YourMessageConsumer: {context.Message.Text}");
         }
     }
 }
